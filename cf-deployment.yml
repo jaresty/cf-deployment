@@ -414,6 +414,10 @@ instance_groups:
         galera: ((galera_server_certificate))
         server: ((mysql_server_certificate))
   - name: proxy
+    provides:
+      sql-db:
+        aliases:
+        - domain: 'sql-db.service.cf.internal'
     release: pxc
     properties:
       api_password: ((cf_mysql_proxy_api_password))
@@ -471,6 +475,11 @@ instance_groups:
         private_key: "((diego_rep_client.private_key))"
   - name: bbs
     release: diego
+    provides:
+      bbs:
+        aliases:
+        - domain: 'bbs.service.cf.internal'
+          health_filter: all
     properties:
       bpm:
         enabled: true
@@ -514,6 +523,10 @@ instance_groups:
           timestamp: "rfc3339"
   - name: silk-controller
     release: silk
+    provides:
+      silk-controller:
+        aliases:
+        - domain: 'silk-controller.service.cf.internal'
     properties:
       ca_cert: ((silk_ca.certificate))
       server_cert: ((silk_controller.certificate))
@@ -533,6 +546,10 @@ instance_groups:
         client_key: ((silk_daemon.private_key))
   - name: locket
     release: diego
+    provides:
+      locket:
+        aliases:
+        - domain: 'locket.service.cf.internal'
     properties:
       bpm:
         enabled: true
@@ -572,6 +589,10 @@ instance_groups:
   jobs:
   - name: uaa
     release: uaa
+    provides:
+      uaa:
+        aliases:
+        - domain: 'uaa.service.cf.internal'
     properties:
       bpm:
         enabled: true
@@ -740,6 +761,10 @@ instance_groups:
   - name: default
   jobs:
   - name: blobstore
+    provides:
+      blobstore:
+        aliases:
+        - domain: 'blobstore.service.cf.internal'
     release: capi
     properties:
       system_domain: "((system_domain))"
@@ -778,6 +803,10 @@ instance_groups:
   jobs:
   - name: cloud_controller_ng
     release: capi
+    provides:
+      cloud-controller-ng:
+        aliases:
+        - domain: 'cloud-controller-ng.service.cf.internal'
     provides:
       cloud_controller: {as: cloud_controller, shared: true}
     properties:
@@ -987,6 +1016,10 @@ instance_groups:
       loggregator: *diego_loggregator_client_properties
   - name: routing-api
     release: routing
+    provides:
+      routing-api:
+        aliases:
+        - domain: 'routing-api.service.cf.internal'
     properties:
       routing_api:
         skip_consul_lock: true
@@ -1013,6 +1046,10 @@ instance_groups:
         tls_port: 8443
   - name: policy-server
     release: cf-networking
+    provides:
+      policy-server:
+        aliases:
+        - domain: 'policy-server.service.cf.internal'
     properties:
       uaa_client_secret: ((uaa_clients_network_policy_secret))
       uaa_ca: ((uaa_ca.certificate))
@@ -1034,6 +1071,10 @@ instance_groups:
       server_key: ((network_policy_server.private_key))
   - name: cc_uploader
     release: capi
+    provides:
+      cc-uploader:
+        aliases:
+        - domain: 'cc-uploader.service.cf.internal'
     properties:
       capi:
         cc_uploader:
@@ -1097,6 +1138,10 @@ instance_groups:
   jobs:
   - name: gorouter
     release: routing
+    provides:
+      gorouter:
+        aliases:
+        - domain: 'gorouter.service.cf.internal'
     properties:
       router:
         enable_ssl: true
@@ -1169,6 +1214,11 @@ instance_groups:
       tls: *cfdot_tls_client_properties
   - name: auctioneer
     release: diego
+    provides:
+      auctioneer:
+        aliases:
+        - domain: 'auctioneer.service.cf.internal'
+          health_filter: all
     properties:
       bpm:
         enabled: true
@@ -1223,6 +1273,10 @@ instance_groups:
     properties: *statsd_injector_properties
   - name: tps
     release: capi
+    provides:
+      tps:
+        aliases:
+        - domain: 'tps.service.cf.internal'
     properties:
       capi:
         tps:
@@ -1237,6 +1291,10 @@ instance_groups:
             client_key: "((cc_bridge_tps.private_key))"
   - name: ssh_proxy
     release: diego
+    provides:
+      ssh-proxy:
+        aliases:
+        - domain: 'ssh-proxy.service.cf.internal'
     properties:
       bpm:
         enabled: true
@@ -1310,6 +1368,10 @@ instance_groups:
   - name: default
   jobs:
   - name: doppler
+    provides:
+      doppler:
+        aliases:
+        - domain: 'doppler.service.cf.internal'
     release: loggregator
     provides:
       doppler: {as: doppler, shared: true}
@@ -1514,6 +1576,12 @@ instance_groups:
           timestamp: "rfc3339"
   - name: rep
     release: diego
+    provides:
+      cell:
+        aliases:
+        - domain: '_.cell.service.cf.internal'
+          placeholder_type: 'uuid'
+
     properties:
       bpm:
         enabled: true
@@ -1603,6 +1671,10 @@ instance_groups:
   jobs:
   - name: loggregator_trafficcontroller
     release: loggregator
+    provides:
+      loggregator-trafficcontroller:
+        aliases:
+        - domain: 'loggregator-trafficcontroller.service.cf.internal'
     consumes:
       doppler: {from: doppler}
     properties:
@@ -1631,7 +1703,11 @@ instance_groups:
   - name: reverse_log_proxy
     release: loggregator
     provides:
-      reverse_log_proxy: {as: reverse_log_proxy, shared: true}
+      reverse_log_proxy:
+        aliases:
+        - domain: 'reverse-log-proxy.service.cf.internal'
+        as: reverse_log_proxy
+        shared: true
     properties:
       loggregator:
         tls:
@@ -1690,6 +1766,10 @@ instance_groups:
   vm_type: minimal
   jobs:
   - name: credhub
+    provides:
+      credhub:
+        aliases:
+        - domain: 'credhub.service.cf.internal'
     properties:
       credhub:
         authentication:
